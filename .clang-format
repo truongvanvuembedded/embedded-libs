@@ -1,0 +1,44 @@
+BasedOnStyle: Google
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# Line length
+ColumnLimit: 150
+
+# Brace style
+BreakBeforeBraces: Allman
+
+# Control statements
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+
+# Pointer & reference style
+PointerAlignment: Left
+DerivePointerAlignment: false
+
+# Spaces
+SpaceBeforeParens: ControlStatements
+
+# Includes
+SortIncludes: false
+
+# Keep readability for registers / macros
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignConsecutiveMacros: true
+
+# Switch-case formatting
+IndentCaseLabels: true
+
+# Macros
+IndentPPDirectives: None
+
+# Comments
+ReflowComments: false
+
+# Keep empty lines readable
+MaxEmptyLinesToKeep: 1
