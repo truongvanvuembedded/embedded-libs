@@ -45,11 +45,5 @@ U1 u1_RingBufferIsFull(ST_RING_BUFFER* apst_RingBuffer);
 U1 u1_RingBufferIsEmpty(ST_RING_BUFFER* apst_RingBuffer);
 // Check if the ring buffer is empty
 
-U1* pu1_GetWritePointer(ST_RING_BUFFER* apst_RingBuffer);
-// Get pointer to current write position in the buffer
-
-U1 u1_GetReadPointer(ST_RING_BUFFER* apst_RingBuffer, U1* apu1_Rxbuff);
-// Read data using internal read pointer into user buffer
-
 #endif /* RING_BUFFER_H */
 /* ************************************* End of File ******************************************** */
