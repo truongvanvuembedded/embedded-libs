@@ -215,7 +215,7 @@ void Led_Blink_Polling(ST_LED* pst_Led)
         pst_Led->u4_Counter++;
 
         /* ON phase: keep LED ON during duty time */
-        if (pst_Led->u4_Counter < pst_Led->u4_Duty)
+        if (pst_Led->u4_Counter <= pst_Led->u4_Duty)
         {
             if (pst_Led->u1_Status != U1ON)
             {
