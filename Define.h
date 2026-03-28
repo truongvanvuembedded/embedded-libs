@@ -18,16 +18,18 @@ typedef volatile signed char VS1;
 typedef volatile signed short VS2;
 typedef volatile signed long VS4;
 
-#define U1TRUE  ((U1)1)
-#define U1FALSE ((U1)0)
-#define U1ON    ((U1)1)
-#define U1OFF   ((U1)0)
-#define U1HI    ((U1)1)
-#define U1LO    ((U1)0)
-#define U1UP    ((U1)1)
-#define U1DOWN  ((U1)0)
-#define U1OK    ((U1)1)
-#define U1NG    ((U1)0)
+#define U1TRUE    ((U1)1)
+#define U1FALSE   ((U1)0)
+#define U1ON      ((U1)1)
+#define U1OFF     ((U1)0)
+#define U1HI      ((U1)1)
+#define U1LO      ((U1)0)
+#define U1UP      ((U1)1)
+#define U1DOWN    ((U1)0)
+#define U1OK      ((U1)1)
+#define U1NG      ((U1)0)
+#define U1PRESS   ((U1)1)
+#define U1RELEASE ((U1)0)
 
 #define BIT_OFF ((U1)0x00)
 #define BIT_ON  ((U1)0x01)

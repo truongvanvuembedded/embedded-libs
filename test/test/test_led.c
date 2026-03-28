@@ -5,9 +5,17 @@
 /* ===== Mock functions ===== */
 static U1 u1_Led_State;
 
-void mock_init(void) {}
-void mock_on(void)  { u1_Led_State = U1ON; }
-void mock_off(void) { u1_Led_State = U1OFF; }
+void mock_init(void)
+{
+}
+void mock_on(void)
+{
+    u1_Led_State = U1ON;
+}
+void mock_off(void)
+{
+    u1_Led_State = U1OFF;
+}
 
 /* ===== Test hooks ===== */
 void setUp(void)
@@ -15,7 +23,9 @@ void setUp(void)
     u1_Led_State = U1OFF;
 }
 
-void tearDown(void) {}
+void tearDown(void)
+{
+}
 
 /* ===== Tests ===== */
 

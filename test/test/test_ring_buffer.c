@@ -3,7 +3,7 @@
 
 /* ===== Mock functions ===== */
 static ST_RING_BUFFER st_RingBuf;
-static U1 u1_Buf[10]; // buffer size = 10
+static U1 u1_Buf[10];  // buffer size = 10
 
 void setUp(void)
 {
@@ -36,7 +36,7 @@ void test_RingBuffer_Get_Data_ShouldReturnData(void)
     RingBuffer_Put_Data(&st_RingBuf, 0xAA);
     U1 au1_Result = u1_RingBuffer_Get_Data(&st_RingBuf, &au1_Data);
     TEST_ASSERT_EQUAL_UINT8(0xAA, au1_Data);
-    TEST_ASSERT_EQUAL_UINT8(1, au1_Result); // assuming 1 = success
+    TEST_ASSERT_EQUAL_UINT8(1, au1_Result);  // assuming 1 = success
     TEST_ASSERT_TRUE(u1_RingBufferIsEmpty(&st_RingBuf));
 }
 
@@ -63,7 +63,7 @@ void test_RingBuffer_ShouldReturnEmptyWhenNoData(void)
 {
     U1 au1_Data;
     U1 au1_Result = u1_RingBuffer_Get_Data(&st_RingBuf, &au1_Data);
-    TEST_ASSERT_EQUAL_UINT8(0, au1_Result); // assuming 0 = fail / no data
+    TEST_ASSERT_EQUAL_UINT8(0, au1_Result);  // assuming 0 = fail / no data
 }
 
 void test_RingBuffer_Overwrite_ShouldKeepLatestData(void)
@@ -87,7 +87,7 @@ void test_RingBuffer_Overwrite_ShouldKeepLatestData(void)
     /* Read all data */
     U1 au1_Data;
     U2 au2_ReadCnt = 0;
-    U1 au1_Expected[] = {3,4,5,6,7,8,9,100,101,102}; // 0,1,2 were overwritten
+    U1 au1_Expected[] = {3, 4, 5, 6, 7, 8, 9, 100, 101, 102};  // 0,1,2 were overwritten
     while (!u1_RingBufferIsEmpty(&st_RingBuf))
     {
         U1 au1_Result = u1_RingBuffer_Get_Data(&st_RingBuf, &au1_Data);
