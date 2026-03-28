@@ -75,11 +75,11 @@ U1 u1_Button_Init(ST_BUTTON* pst_Button, U1 u1_OnLevel, pf_button_init pf_Init, 
         return U1NG;  // Invalid parameters
     }
 
-    pst_Button->u1_Enable = U1OFF;         // Start with button disabled
-    pst_Button->u1_CounterEnable = U1OFF;  // Counter disabled by default
-    pst_Button->u1_Status = U1RELEASE;     // Initial state is released
-    pst_Button->u1_OnLevel = u1_OnLevel;   // Set active level for button press
-    pst_Button->u4_Counter = U4MIN;        // Reset counter
+    pst_Button->u1_Enable = U1OFF;        // Start with button disabled
+    pst_Button->u1_CounterEnable = U1ON;  // Counter disabled by default
+    pst_Button->u1_Status = U1RELEASE;    // Initial state is released
+    pst_Button->u1_OnLevel = u1_OnLevel;  // Set active level for button press
+    pst_Button->u4_Counter = U4MIN;       // Reset counter
 
     pst_Button->pf_Init = pf_Init;
     pst_Button->pu1_Read = pu1_Read;
@@ -155,27 +155,30 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
     u1_Hw_Button_State = pst_Button->pu1_Read();
 
     /* ----- Button pressed ----- */
-    if (u1_Hw_Button_State == pst_Button->u1_OnLevel && pst_Button->u1_CounterEnable)
+    if (u1_Hw_Button_State == pst_Button->u1_OnLevel)
     {
-        /* Increase press duration counter */
-        pst_Button->u4_Counter++;
+        if (pst_Button->u1_CounterEnable)
+        {
+            /* Increase press duration counter */
+            pst_Button->u4_Counter++;
 
-        /* ----- Long press detection ----- */
-        if (pst_Button->u4_Counter >= U4_BUTTON_LONG_PRESS_TIME && pst_Button->u1_Status != U1_BUTTON_SW_STATE_LONG_PRESS)
-        {
-            pst_Button->u1_Status = U1_BUTTON_SW_STATE_LONG_PRESS;  // Update status
-            pst_Button->u1_CounterEnable = U1OFF;                   // Stop counting
-            pst_Button->u1_Enable = U1OFF;                          // Temporarily disable for callback
-            pst_Button->pf_Callback(pst_Button);                    // Trigger callback
-            pst_Button->u1_Enable = U1ON;                           // Re-enable button
-        }
-        /* ----- Short hold press detection ----- */
-        else if (pst_Button->u4_Counter >= U4_BUTTON_SHORT_PRESS_MIN_TIME && pst_Button->u1_Status != U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS)
-        {
-            pst_Button->u1_Status = U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS;
-            pst_Button->u1_Enable = U1OFF;        // Temporarily disable for callback
-            pst_Button->pf_Callback(pst_Button);  // Trigger callback
-            pst_Button->u1_Enable = U1ON;         // Re-enable button
+            /* ----- Long press detection ----- */
+            if (pst_Button->u4_Counter >= U4_BUTTON_LONG_PRESS_TIME && pst_Button->u1_Status != U1_BUTTON_SW_STATE_LONG_PRESS)
+            {
+                pst_Button->u1_Status = U1_BUTTON_SW_STATE_LONG_PRESS;  // Update status
+                pst_Button->u1_CounterEnable = U1OFF;                   // Stop counting
+                pst_Button->u1_Enable = U1OFF;                          // Temporarily disable for callback
+                pst_Button->pf_Callback(pst_Button);                    // Trigger callback
+                pst_Button->u1_Enable = U1ON;                           // Re-enable button
+            }
+            /* ----- Short hold press detection ----- */
+            else if (pst_Button->u4_Counter >= U4_BUTTON_SHORT_PRESS_MIN_TIME && pst_Button->u1_Status != U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS)
+            {
+                pst_Button->u1_Status = U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS;
+                pst_Button->u1_Enable = U1OFF;        // Temporarily disable for callback
+                pst_Button->pf_Callback(pst_Button);  // Trigger callback
+                pst_Button->u1_Enable = U1ON;         // Re-enable button
+            }
         }
     }
     /* ----- Button released ----- */

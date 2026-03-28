@@ -18,7 +18,7 @@
 //	define
 //==================================================================================================
 /* Button timing parameters */
-#define U4_BUTTON_SHORT_PRESS_MIN_TIME ((U4)(20))   /* 20ms */
+#define U4_BUTTON_SHORT_PRESS_MIN_TIME ((U4)(50))   /* 50ms */
 #define U4_BUTTON_SHORT_PRESS_MAX_TIME ((U4)(1000)) /* 1s */
 #define U4_BUTTON_LONG_PRESS_TIME      ((U4)(2000)) /* 2s */
 
