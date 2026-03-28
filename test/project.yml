@@ -100,9 +100,11 @@
     - +:test/**
     - -:test/support
   :source:
+    - ../button/**
     - ../led/**
     - ../ring_buffer/**
   :include:
+    - ../button
     - ../led
     - ../ring_buffer
     - ../
