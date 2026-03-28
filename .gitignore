@@ -1,0 +1,32 @@
+# Build outputs
+build/
+out/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+
+# Ceedling
+vendor/
+release/
+logs/
+*.log
+
+# Coverage
+coverage/
+*.gcda
+*.gcno
+*.gcov
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
