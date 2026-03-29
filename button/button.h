@@ -21,12 +21,14 @@
 #define U4_BUTTON_SHORT_PRESS_MIN_TIME ((U4)(50))   /* 50ms */
 #define U4_BUTTON_SHORT_PRESS_MAX_TIME ((U4)(1000)) /* 1s */
 #define U4_BUTTON_LONG_PRESS_TIME      ((U4)(2000)) /* 2s */
+#define U4_BUTTON_DOUBLE_PRESS_TIMEOUT ((U4)(300))  /* 300ms */
 
 /* Button software states */
-#define U1_BUTTON_SW_STATE_RELEASE             ((U1)(0x00))
-#define U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS    ((U1)(0x01))
-#define U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS ((U1)(0x02))
-#define U1_BUTTON_SW_STATE_LONG_PRESS          ((U1)(0x03))
+#define U1_BUTTON_SW_STATE_RELEASE             ((U1)(0x00)) /* Button is released, no press detected */
+#define U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS    ((U1)(0x01)) /* Button is being held in a short press state */
+#define U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS ((U1)(0x02)) /* Button was short pressed and released */
+#define U1_BUTTON_SW_STATE_LONG_PRESS          ((U1)(0x03)) /* Button is held for long press duration */
+#define U1_BUTTON_SW_STATE_DOUBLE_PRESS        ((U1)(0x04)) /* Button is double pressed */
 //==================================================================================================
 //	structure
 //==================================================================================================

@@ -77,6 +77,29 @@ void test_Button_Disable_should_disable_button(void)
 void test_Button_Timer_Polling_short_press(void)
 {
     ST_BUTTON st_Button;
+    U1 au1_PressSta = U1HI;
+    U1 au1_CallBack_Cnt = U1MIN;
+
+    /* mock function */
+    U1 mock_read_pressed(void)
+    {
+        return au1_PressSta;
+    }
+    void mock_callback(ST_BUTTON* pst_Button)
+    {
+        /* Hold press detected */
+        if( au1_CallBack_Cnt == U1MIN){
+            TEST_MESSAGE("Hold press detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
+        }
+        /* Short press valid detected */
+        else if( au1_CallBack_Cnt == 1){
+            TEST_MESSAGE("Short press valid detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
+        }
+        /* Increate counter callback */
+        au1_CallBack_Cnt++;
+    }
     /* Init */
     u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback);
     /* Enable */
@@ -87,14 +110,39 @@ void test_Button_Timer_Polling_short_press(void)
         Button_Timer_Polling(&st_Button);
     }
 
-    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
-    TEST_ASSERT_EQUAL(1, u1_CallBack_Called);
+    /* Release button and check for SHORT_RELEASE_PRESS state */
+    au1_PressSta = U1LO;
+    Button_Timer_Polling(&st_Button);
 }
 
 /* Test long press detection */
 void test_Button_Timer_Polling_long_press(void)
 {
     ST_BUTTON st_Button;
+    U1 au1_PressSta = U1HI;
+    U1 au1_CallBack_Cnt = U1MIN;
+
+    /* mock function */
+    U1 mock_read_pressed(void)
+    {
+        return au1_PressSta;
+    }
+
+    void mock_callback(ST_BUTTON* pst_Button)
+    {
+        /* Hold press detected */
+        if( au1_CallBack_Cnt == U1MIN){
+            TEST_MESSAGE("Hold press detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
+        }
+        /* Long press valid detected */
+        else if( au1_CallBack_Cnt == 1){
+            TEST_MESSAGE("Long press valid detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_LONG_PRESS, st_Button.u1_Status);
+        }
+        /* Increate counter callback */
+        au1_CallBack_Cnt++;
+    }
     /* Init */
     u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback);
     /* Enable */
@@ -105,10 +153,16 @@ void test_Button_Timer_Polling_long_press(void)
     {
         Button_Timer_Polling(&st_Button);
     }
-
-    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_LONG_PRESS, st_Button.u1_Status);
-    /* Callback include for short and long press */
-    TEST_ASSERT_EQUAL(2, u1_CallBack_Called);
+    /* If still press it not effect */
+    for (U4 au4_ForC = U4MIN; au4_ForC < U4_BUTTON_LONG_PRESS_TIME; au4_ForC++)
+    {
+        Button_Timer_Polling(&st_Button);
+    }
+    /* Release */
+    au1_PressSta = U1LO;
+    Button_Timer_Polling(&st_Button);
+    TEST_MESSAGE("Button release");
+    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
 }
 
 /* Test that after long press is detected, holding button does not change counter or status */

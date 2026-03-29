@@ -186,9 +186,9 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
     {
         /* Detect valid short press release */
         if (pst_Button->u4_Counter < U4_BUTTON_SHORT_PRESS_MAX_TIME && pst_Button->u4_Counter >= U4_BUTTON_SHORT_PRESS_MIN_TIME &&
-            pst_Button->u1_Status != U1_BUTTON_SW_STATE_RELEASE)
+            pst_Button->u1_Status != U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS)
         {
-            pst_Button->u1_Status = U1_BUTTON_SW_STATE_RELEASE;  // Update status to released
+            pst_Button->u1_Status = U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS;  // Update status to released
             pst_Button->u1_Enable = U1OFF;                       // Temporarily disable for callback
             pst_Button->pf_Callback(pst_Button);                 // Trigger callback
         }
