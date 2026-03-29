@@ -44,6 +44,8 @@ typedef struct
     U1 u1_CounterEnable; /* Enable/disable counting for long press */
     U1 u1_Status;        /* Current button state (U1PRESS/U1RELEASE) */
     U1 u1_OnLevel;       /* Hardware level indicating button press (e.g., active low/high) */
+    U1 u1_Double_F;      /* Double flag */
+    U4 u4_Double_Cnt;    /* Double timeout */
     U4 u4_Counter;       /* Counter to track button press duration */
 
     /* Function pointers */
