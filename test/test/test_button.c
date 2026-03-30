@@ -49,7 +49,7 @@ void test_Button_Init_should_return_false_on_NULL_pointer(void)
 void test_Button_Init_should_initialize_button(void)
 {
     ST_BUTTON st_Button;
-    TEST_ASSERT_TRUE(u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback));
+    TEST_ASSERT_TRUE(u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, (pf_button_callback)mock_callback));
     TEST_ASSERT_EQUAL(U1OFF, st_Button.u1_Enable);
     TEST_ASSERT_EQUAL(U1ON, st_Button.u1_CounterEnable);
     TEST_ASSERT_EQUAL(U1HI, st_Button.u1_OnLevel);
@@ -103,7 +103,7 @@ void test_Button_Timer_Polling_short_press(void)
         au1_CallBack_Cnt++;
     }
     /* Init */
-    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback);
+    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, (pf_button_callback)mock_callback);
     /* Enable */
     Button_Enable(&st_Button);
     /* Simulate a press for short press duration */
@@ -148,7 +148,7 @@ void test_Button_Timer_Polling_long_press(void)
         au1_CallBack_Cnt++;
     }
     /* Init */
-    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback);
+    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, (pf_button_callback)mock_callback);
     /* Enable */
     Button_Enable(&st_Button);
 
@@ -180,7 +180,7 @@ void test_Button_Timer_Polling_hold_after_long_press_should_not_change_status(vo
         return au1_PressSta;
     }
     /* Init button */
-    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback);
+    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, (pf_button_callback)mock_callback);
     Button_Enable(&st_Button);
 
     /* Step 1: Simulate press until long press is detected */
@@ -256,7 +256,7 @@ void test_Button_Timer_Polling_double_press(void)
         au1_CallBack_Cnt++;
     }
     /* Init */
-    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, mock_callback);
+    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, (pf_button_callback)mock_callback);
     /* Enable */
     Button_Enable(&st_Button);
 
