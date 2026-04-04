@@ -194,7 +194,6 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
                 pst_Button->pf_Callback(pst_Button);  // Trigger callback
                 pst_Button->u1_Enable = U1ON;         // Re-enable button
             }
-            
         }
     }
     /* ----- Button released ----- */
