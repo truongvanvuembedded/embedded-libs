@@ -101,10 +101,12 @@
     - -:test/support
   :source:
     - ../button/**
+    - ../cmd_line/**
     - ../led/**
     - ../ring_buffer/**
   :include:
     - ../button
+    - ../cmd_line
     - ../led
     - ../ring_buffer
     - ../
