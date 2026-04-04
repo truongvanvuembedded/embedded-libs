@@ -20,12 +20,14 @@ static void mock_echo_handler(void* apv_Arg)
     u1_EchoHandler_Called++;
 }
 
+/* clang-format off */
 static ST_CMD_LINE st_CmdTable[] =
 {
     { (U1*)"TEST", NULL, mock_test_handler },
     { (U1*)"ECHO", NULL, mock_echo_handler },
     { NULL, NULL, NULL }
 };
+/* clang-format on */
 
 void setUp(void)
 {

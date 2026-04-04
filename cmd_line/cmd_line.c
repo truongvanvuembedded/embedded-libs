@@ -66,32 +66,37 @@ U1 u1_CmdLine_Parser(ST_CMD_LINE* apst_CmdLineTable, U1* apu1_Cmd)
 {
     U1 au1_CmdBuf[U1_MAX_CMD_SIZE];
     U1 au1_Ind = 0;
+    U1* apu1_CmdLocal = apu1_Cmd;
 
     /* Check input */
     if (!apst_CmdLineTable)
         return U1_CMD_TBL_NOT_FOUND;
+    if (!apu1_CmdLocal)
+        return U1_CMD_NOT_FOUND;
+
     /* Save cmd to local buffer and break untill meet \n, \r, 0*/
-    while (*apu1_Cmd)
+    while (*apu1_CmdLocal)
     {
-        if (*apu1_Cmd == ' ' || *apu1_Cmd == '\r' || *apu1_Cmd == '\n')
+        if (*apu1_CmdLocal == ' ' || *apu1_CmdLocal == '\r' || *apu1_CmdLocal == '\n')
         {
-            au1_CmdBuf[au1_Ind] = 0;
             break;
         }
         else
         {
-            au1_CmdBuf[au1_Ind++] = *(apu1_Cmd++);
+            au1_CmdBuf[au1_Ind++] = *(apu1_CmdLocal++);
             if (au1_Ind >= U1_MAX_CMD_SIZE)
             {
                 return U1_CMD_TOO_LONG;
             }
         }
     }
+    au1_CmdBuf[au1_Ind] = 0;
+
     /* find respective command in command table */
     au1_Ind = U1MIN;
     while (apst_CmdLineTable[au1_Ind].pu1_Cmd)
     {
-        if (strcmp((const char*)apst_CmdLineTable[au1_Ind].pu1_Cmd, (const char*)apu1_Cmd) == 0)
+        if (strcmp((const char*)apst_CmdLineTable[au1_Ind].pu1_Cmd, (const char*)au1_CmdBuf) == 0)
         {
             /* perform respective function */
             apst_CmdLineTable[au1_Ind].pf_handler(apu1_Cmd);
