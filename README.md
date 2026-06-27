@@ -29,12 +29,12 @@ All components are designed to be:
 │   ├── ring_buffer.h
 │   └── README.md        # Module-specific documentation
 ├── test/                # Unit test (Ceedling)
-│   ├── project.yml      # Ceedling configuration
 │   ├── test/            # Test cases
 │   │   ├── test_led.c
 │   │   └── support/     # Test helpers / mocks
 ├── Makefile             # Build / format utilities
 └── README.md            # Project overview
+├── project.yml      # Ceedling configuration
 ```
 
 ## 🧪 How to Run Unit Tests
@@ -55,9 +55,23 @@ Verify installation:
 ceedling version
 ```
 
----
+### 2. Install Gcovr (Coverage Report)
 
-### 2. Run Tests
+gcovr is required to generate HTML code coverage reports.
+
+Install gcovr:
+
+```bash
+sudo apt install gcovr
+```
+
+Verify the installation:
+
+```bash
+gcovr --version
+```
+
+### 3. Run Tests
 
 Navigate to the test directory:
 
@@ -77,6 +91,22 @@ Run a specific module test (e.g., LED):
 ceedling test:test_led
 ```
 
+### 4. Generate Code Coverage Report
+
+Run all tests with coverage enabled:
+
+```bash
+ceedling gcov:all
+```
+
+After the tests complete, the HTML coverage report will be generated at:
+
+```bash
+build/artifacts/gcov/gcovr/GcovCoverageResults.html
+```
+
+Open the report in your browser to view line, branch, and function coverage.
+![Coverage repoert template](<resource/img/gcc_code_coverage_report_template.png>)
 ---
 
 ### Notes
