@@ -100,15 +100,15 @@
     - +:test/**
     - -:test/support
   :source:
-    - button/**
-    - cmd_line/**
-    - led/**
-    - ring_buffer/**
+    - source/button/**
+    - source/cmd_line/**
+    - source/led/**
+    - source/ring_buffer/**
   :include:
-    - button
-    - cmd_line
-    - led
-    - ring_buffer
+    - source/button
+    - source/cmd_line
+    - source/led
+    - source/ring_buffer
     - .
   :support:
     - test/support
