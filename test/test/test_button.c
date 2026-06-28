@@ -42,7 +42,15 @@ void tearDown(void)
 /* Test initialization with NULL pointer should fail */
 void test_Button_Init_should_return_false_on_NULL_pointer(void)
 {
-    TEST_ASSERT_FALSE(u1_Button_Init(NULL, U1HI, NULL, NULL, NULL));
+    ST_BUTTON ast_button;
+    /* Button null check */
+    TEST_ASSERT_FALSE(u1_Button_Init(NULL, U1HI, mock_init, mock_read_pressed, mock_callback));
+    /* Init function null check */
+    TEST_ASSERT_FALSE(u1_Button_Init(&ast_button, U1HI, NULL, mock_read_pressed, mock_callback));
+    /* Read function null check */
+    TEST_ASSERT_FALSE(u1_Button_Init(&ast_button, U1HI, mock_init, NULL, mock_callback));
+    /* Callback function null check */
+    TEST_ASSERT_FALSE(u1_Button_Init(&ast_button, U1HI, mock_init, mock_read_pressed, NULL));
 }
 
 /* Test initialization with valid pointer should succeed */
@@ -61,6 +69,9 @@ void test_Button_Init_should_initialize_button(void)
 void test_Button_Enable_should_enable_button(void)
 {
     ST_BUTTON st_Button = {0};
+    /* Fail when button pass NULL parameter to funtion */
+    Button_Enable(NULL);
+    TEST_ASSERT_EQUAL(U1OFF, st_Button.u1_Enable);
     Button_Enable(&st_Button);
     TEST_ASSERT_EQUAL(U1ON, st_Button.u1_Enable);
 }
@@ -69,6 +80,9 @@ void test_Button_Enable_should_enable_button(void)
 void test_Button_Disable_should_disable_button(void)
 {
     ST_BUTTON st_Button = {0};
+    /* Fail when button pass NULL parameter to funtion */
+    Button_Disable(NULL);
+    TEST_ASSERT_EQUAL(U1OFF, st_Button.u1_Enable);
     Button_Disable(&st_Button);
     TEST_ASSERT_EQUAL(U1OFF, st_Button.u1_Enable);
 }
@@ -115,6 +129,8 @@ void test_Button_Timer_Polling_short_press(void)
     /* Release button and check for SHORT_RELEASE_PRESS state */
     au1_PressSta = U1LO;
     Button_Timer_Polling(&st_Button);
+    //Button_Timer_Polling(&st_Button);
+    //TEST_ASSERT_EQUAL(U4_BUTTON_DOUBLE_PRESS_TIMEOUT-1, st_Button.u4_Double_Cnt);
 }
 
 /* Test long press detection */
@@ -291,4 +307,109 @@ void test_Button_Timer_Polling_double_press(void)
     Button_Timer_Polling(&st_Button);
     TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
     TEST_ASSERT_EQUAL(3, au1_CallBack_Cnt);
+}
+
+/* Test button short press when button not enable and it must */
+void test_Button_Timer_Polling_simulate_short_press_but_return_release_state_when_button_not_enable(void)
+{
+    ST_BUTTON st_Button;
+    U1 au1_PressSta = U1HI;
+    U1 au1_CallBack_Cnt = U1MIN;
+
+    /* mock function */
+    U1 mock_read_pressed(void)
+    {
+        return au1_PressSta;
+    }
+    void mock_callback(ST_BUTTON * pst_Button)
+    {
+        /* Hold press detected */
+        if (au1_CallBack_Cnt == U1MIN)
+        {
+            TEST_MESSAGE("Hold press detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
+        }
+        /* Short press valid detected */
+        else if (au1_CallBack_Cnt == 1)
+        {
+            TEST_MESSAGE("Short press valid detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
+        }
+        /* Increate counter callback */
+        au1_CallBack_Cnt++;
+    }
+    /* Init */
+    u1_Button_Init(&st_Button, U1HI, mock_init, mock_read_pressed, (pf_button_callback)mock_callback);
+    /* Not enable */
+    //Button_Enable(&st_Button);
+    /* Simulate a press for short press duration */
+    for (U4 au4_ForC = U4MIN; au4_ForC < U4_BUTTON_SHORT_PRESS_MIN_TIME; au4_ForC++)
+    {
+        Button_Timer_Polling(&st_Button);
+    }
+
+    /* Release button and check for SHORT_RELEASE_PRESS state */
+    au1_PressSta = U1LO;
+    Button_Timer_Polling(&st_Button);
+
+    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
+}
+
+/* Test button not set double flag when time between two press > timeout for recoginze double press */
+void test_Button_not_set_double_flag_when_gap_between_two_press_bigger_than_timeout_of_max_time_recogine_of_double_press(void)
+{
+    ST_BUTTON st_Button;
+    U1 au1_PressSta = U1HI;
+    U1 au1_CallBack_Cnt = U1MIN;
+
+    U1 mock_read(void)
+    {
+        return au1_PressSta;
+    }
+
+    void mock_callback(ST_BUTTON * pst_Button)
+    {
+        /* Hold press detected */
+        if (au1_CallBack_Cnt == U1MIN)
+        {
+            TEST_MESSAGE("Hold press detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
+        }
+        /* Short press valid detected */
+        else if (au1_CallBack_Cnt == 1)
+        {
+            TEST_MESSAGE("Short press valid detected");
+            TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
+        }
+        /* Increate counter callback */
+        au1_CallBack_Cnt++;
+    }
+    TEST_ASSERT_TRUE(u1_Button_Init(&st_Button, U1HI, mock_init, mock_read, (pf_button_callback)mock_callback));
+
+    Button_Enable(&st_Button);
+
+    /* Simulate a press for short press duration */
+    for (U4 au4_ForC = U4MIN; au4_ForC < U4_BUTTON_SHORT_PRESS_MIN_TIME; au4_ForC++)
+    {
+        Button_Timer_Polling(&st_Button);
+    }
+    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
+    /* Release button */
+    au1_PressSta = U1LO;
+    Button_Timer_Polling(&st_Button);
+    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
+
+    /* Not press again in timeout of double flag */
+    for (U4 au4_ForC = U4MIN; au4_ForC < U4_BUTTON_DOUBLE_PRESS_TIMEOUT; au4_ForC++)
+    {
+        Button_Timer_Polling(&st_Button);
+    }
+    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
+
+    /* Press again */
+    au1_PressSta = U1HI;
+    Button_Timer_Polling(&st_Button);
+
+    /* Now state not double */
+    TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
 }

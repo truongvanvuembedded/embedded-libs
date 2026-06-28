@@ -165,7 +165,7 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
             /* Increase press duration counter */
             pst_Button->u4_Counter++;
             /* ----- Double press detection ----- */
-            if (pst_Button->u1_Double_F && pst_Button->u4_Double_Cnt)
+            if (pst_Button->u1_Double_F)
             {
                 pst_Button->u1_Status = U1_BUTTON_SW_STATE_DOUBLE_PRESS;  // Update status
                 pst_Button->u1_CounterEnable = U1OFF;                     // Stop counting wait untill user release for detect next state
@@ -174,7 +174,7 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
                 u1_EventDetected = U1TRUE;
             }
             /* ----- Long press detection ----- */
-            else if (pst_Button->u4_Counter >= U4_BUTTON_LONG_PRESS_TIME && pst_Button->u1_Status != U1_BUTTON_SW_STATE_LONG_PRESS)
+            else if (pst_Button->u4_Counter >= U4_BUTTON_LONG_PRESS_TIME)
             {
                 pst_Button->u1_Status = U1_BUTTON_SW_STATE_LONG_PRESS;  // Update status
                 pst_Button->u1_CounterEnable = U1OFF;                   // Stop counting
@@ -200,8 +200,7 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
     else
     {
         /* Detect valid short press release */
-        if (pst_Button->u4_Counter < U4_BUTTON_SHORT_PRESS_MAX_TIME && pst_Button->u4_Counter >= U4_BUTTON_SHORT_PRESS_MIN_TIME &&
-            pst_Button->u1_Status != U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS)
+        if (pst_Button->u4_Counter < U4_BUTTON_SHORT_PRESS_MAX_TIME && pst_Button->u4_Counter >= U4_BUTTON_SHORT_PRESS_MIN_TIME)
         {
             pst_Button->u1_Status = U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS;  // Update status to released
             pst_Button->u1_Enable = U1OFF;                                   // Temporarily disable for callback
@@ -218,5 +217,7 @@ void Button_Timer_Polling(ST_BUTTON* pst_Button)
     }
     /* Double press timeout decrement */
     if (pst_Button->u4_Double_Cnt && --pst_Button->u4_Double_Cnt == 0)
+    {
         pst_Button->u1_Double_F = U1OFF;
+    }
 }
