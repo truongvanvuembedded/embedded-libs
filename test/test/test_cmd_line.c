@@ -40,11 +40,14 @@ void tearDown(void)
 {
 }
 
-void test_CmdLine_Parser_Should_return_tbl_not_found_when_table_is_NULL(void)
+void test_CmdLine_Parser_Should_return_tbl_not_found_when_parameter_is_NULL(void)
 {
     U1 au1_Cmd[] = "TEST";
-
+	/* Table null */
     TEST_ASSERT_EQUAL(U1_CMD_TBL_NOT_FOUND, u1_CmdLine_Parser(NULL, au1_Cmd));
+    TEST_ASSERT_EQUAL(U1MIN, u1_TestHandler_Called);
+	/* Cmd null */
+    TEST_ASSERT_EQUAL(U1_CMD_TBL_NOT_FOUND, u1_CmdLine_Parser(st_CmdTable, NULL));
     TEST_ASSERT_EQUAL(U1MIN, u1_TestHandler_Called);
 }
 
@@ -82,6 +85,26 @@ void test_CmdLine_Parser_Should_invoke_test_handler_for_valid_command_without_ar
     TEST_ASSERT_EQUAL(U1MIN, u1_EchoHandler_Called);
     TEST_ASSERT_NOT_NULL(pu1_LastArg);
     TEST_ASSERT_EQUAL((U1)'T', pu1_LastArg[0]);
+}
+
+void test_CmdLine_Parser_Should_parse_command_terminated_by_carriage_return(void)
+{
+    U1 au1_Cmd[] = "TEST\r";
+
+    TEST_ASSERT_EQUAL(U1_CMD_SUCCESS, u1_CmdLine_Parser(st_CmdTable, au1_Cmd));
+    TEST_ASSERT_EQUAL(U1TRUE, u1_TestHandler_Called);
+    TEST_ASSERT_EQUAL(U1MIN, u1_EchoHandler_Called);
+    TEST_ASSERT_NOT_NULL(pu1_LastArg);
+    TEST_ASSERT_EQUAL((U1)'T', pu1_LastArg[0]);
+}
+
+void test_CmdLine_Parser_Should_parse_command_terminated_by_newline(void)
+{
+    U1 au1_Cmd[] = "TEST\n";
+
+    TEST_ASSERT_EQUAL(U1_CMD_SUCCESS, u1_CmdLine_Parser(st_CmdTable, au1_Cmd));
+    TEST_ASSERT_EQUAL(U1TRUE, u1_TestHandler_Called);
+    TEST_ASSERT_EQUAL(U1MIN, u1_EchoHandler_Called);
 }
 
 void test_CmdLine_Parser_Should_invoke_echo_handler_for_valid_command_with_arguments(void)
