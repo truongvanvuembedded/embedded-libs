@@ -4,9 +4,11 @@
 
 /* ===== Mock functions ===== */
 static U1 u1_Led_State;
+static U1 u1_Led_Inited;
 
 void mock_init(void)
 {
+	u1_Led_Inited = U1TRUE;
 }
 void mock_on(void)
 {
@@ -21,6 +23,7 @@ void mock_off(void)
 void setUp(void)
 {
     u1_Led_State = U1OFF;
+	u1_Led_Inited = U1FALSE;
 }
 
 void tearDown(void)
@@ -28,6 +31,33 @@ void tearDown(void)
 }
 
 /* ===== Tests ===== */
+
+void test_Led_Init_with_Init_function_Null_Should_Not_Init_Led( void )
+{
+    ST_LED st_Led;
+    Led_Init(&st_Led, NULL, mock_on, mock_off);
+	/* Not run init function */
+    TEST_ASSERT_EQUAL(U1FALSE, u1_Led_Inited);
+}
+
+void test_Led_Init_with_On_function_Null_Should_Not_On_Led_State( void )
+{
+    ST_LED st_Led;
+    Led_Init(&st_Led, mock_init, NULL, mock_off);
+	Led_On(&st_Led);
+	/* Hardware led state still off */
+    TEST_ASSERT_EQUAL(U1OFF, u1_Led_State);
+}
+
+void test_Led_Init_with_Off_function_Null_Should_Not_Off_Led_State( void )
+{
+    ST_LED st_Led;
+	u1_Led_State = U1ON;
+    Led_Init(&st_Led, mock_init, mock_on, NULL);
+	Led_Off(&st_Led);
+	/* Hardware led state still ON */
+    TEST_ASSERT_EQUAL(U1ON, u1_Led_State);
+}
 
 void test_Led_On_should_turn_on_led(void)
 {
@@ -69,9 +99,9 @@ void test_Led_Blink_should_follow_300ms_on_500ms_off(void)
 
     /*
      * Assume Led_Blink_Polling() is called every 10ms:
-     * → ON  300ms = 30 ticks
-     * → OFF 500ms = 50 ticks
-     * → Period    = 80 ticks
+     * 竊� ON  300ms = 30 ticks
+     * 竊� OFF 500ms = 50 ticks
+     * 竊� Period    = 80 ticks
      */
     Led_Blink_Set(&st_Led, 80, 30);
 
@@ -101,9 +131,9 @@ void test_Led_Blink_Reset_should_stop_blink_and_keep_current_state(void)
 
     /*
      * Assume Led_Blink_Polling() is called every 10ms:
-     * → ON  300ms = 30 ticks
-     * → OFF 500ms = 50 ticks
-     * → Period    = 80 ticks
+     * 竊� ON  300ms = 30 ticks
+     * 竊� OFF 500ms = 50 ticks
+     * 竊� Period    = 80 ticks
      */
     Led_Blink_Set(&st_Led, 80, 30);
 
