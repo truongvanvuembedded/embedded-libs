@@ -9,8 +9,8 @@ format:
 
 # Run all tests
 test-all:
-	cd test && ceedling test:all
+	ceedling test:all
 
 # Run specific test (usage: make test TEST=test_led)
 test:
-	cd test && ceedling test:$(TEST)
+	ceedling test:$(TEST)

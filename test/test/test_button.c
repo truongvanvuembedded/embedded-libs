@@ -21,7 +21,7 @@ static void mock_init()
 {
 }
 
-static void mock_callback(ST_BUTTON* pst_Button)
+static void mock_callback(void* pst_Button)
 {
     (void)pst_Button;
     u1_CallBack_Called++;
@@ -104,13 +104,13 @@ void test_Button_Timer_Polling_short_press(void)
         /* Hold press detected */
         if (au1_CallBack_Cnt == U1MIN)
         {
-            TEST_MESSAGE("Hold press detected");
+            //TEST_MESSAGE("Hold press detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
         }
         /* Short press valid detected */
         else if (au1_CallBack_Cnt == 1)
         {
-            TEST_MESSAGE("Short press valid detected");
+            //TEST_MESSAGE("Short press valid detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
         }
         /* Increate counter callback */
@@ -151,13 +151,13 @@ void test_Button_Timer_Polling_long_press(void)
         /* Hold press detected */
         if (au1_CallBack_Cnt == U1MIN)
         {
-            TEST_MESSAGE("Hold press detected");
+            //TEST_MESSAGE("Hold press detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
         }
         /* Long press valid detected */
         else if (au1_CallBack_Cnt == 1)
         {
-            TEST_MESSAGE("Long press valid detected");
+            //TEST_MESSAGE("Long press valid detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_LONG_PRESS, st_Button.u1_Status);
         }
         /* Increate counter callback */
@@ -181,7 +181,7 @@ void test_Button_Timer_Polling_long_press(void)
     /* Release */
     au1_PressSta = U1LO;
     Button_Timer_Polling(&st_Button);
-    TEST_MESSAGE("Button release");
+    //TEST_MESSAGE("Button release");
     TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_RELEASE, st_Button.u1_Status);
 }
 
@@ -253,19 +253,19 @@ void test_Button_Timer_Polling_double_press(void)
         /* Hold press detected */
         if (au1_CallBack_Cnt == U1MIN)
         {
-            TEST_MESSAGE("Hold press detected");
+            //TEST_MESSAGE("Hold press detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
         }
         /* Short press valid detected */
         else if (au1_CallBack_Cnt == 1)
         {
-            TEST_MESSAGE("Short press valid detected");
+            //TEST_MESSAGE("Short press valid detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
         }
         /* Double press valid detected */
         else if (au1_CallBack_Cnt == 2)
         {
-            TEST_MESSAGE("Double press valid detected");
+            //TEST_MESSAGE("Double press valid detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_DOUBLE_PRESS, st_Button.u1_Status);
         }
         /* Increate counter callback */
@@ -326,13 +326,13 @@ void test_Button_Timer_Polling_simulate_short_press_but_return_release_state_whe
         /* Hold press detected */
         if (au1_CallBack_Cnt == U1MIN)
         {
-            TEST_MESSAGE("Hold press detected");
+            //TEST_MESSAGE("Hold press detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
         }
         /* Short press valid detected */
         else if (au1_CallBack_Cnt == 1)
         {
-            TEST_MESSAGE("Short press valid detected");
+            //TEST_MESSAGE("Short press valid detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
         }
         /* Increate counter callback */
@@ -372,13 +372,13 @@ void test_Button_not_set_double_flag_when_gap_between_two_press_bigger_than_time
         /* Hold press detected */
         if (au1_CallBack_Cnt == U1MIN)
         {
-            TEST_MESSAGE("Hold press detected");
+            //TEST_MESSAGE("Hold press detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_HOLD_PRESS, st_Button.u1_Status);
         }
         /* Short press valid detected */
         else if (au1_CallBack_Cnt == 1)
         {
-            TEST_MESSAGE("Short press valid detected");
+            //TEST_MESSAGE("Short press valid detected");
             TEST_ASSERT_EQUAL(U1_BUTTON_SW_STATE_SHORT_RELEASE_PRESS, st_Button.u1_Status);
         }
         /* Increate counter callback */
