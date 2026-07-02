@@ -8,7 +8,7 @@ static U1 u1_Led_Inited;
 
 void mock_init(void)
 {
-	u1_Led_Inited = U1TRUE;
+    u1_Led_Inited = U1TRUE;
 }
 void mock_on(void)
 {
@@ -23,7 +23,7 @@ void mock_off(void)
 void setUp(void)
 {
     u1_Led_State = U1OFF;
-	u1_Led_Inited = U1FALSE;
+    u1_Led_Inited = U1FALSE;
 }
 
 void tearDown(void)
@@ -32,30 +32,30 @@ void tearDown(void)
 
 /* ===== Tests ===== */
 
-void test_Led_Init_with_Init_function_Null_Should_Not_Init_Led( void )
+void test_Led_Init_with_Init_function_Null_Should_Not_Init_Led(void)
 {
     ST_LED st_Led;
     Led_Init(&st_Led, NULL, mock_on, mock_off);
-	/* Not run init function */
+    /* Not run init function */
     TEST_ASSERT_EQUAL(U1FALSE, u1_Led_Inited);
 }
 
-void test_Led_Init_with_On_function_Null_Should_Not_On_Led_State( void )
+void test_Led_Init_with_On_function_Null_Should_Not_On_Led_State(void)
 {
     ST_LED st_Led;
     Led_Init(&st_Led, mock_init, NULL, mock_off);
-	Led_On(&st_Led);
-	/* Hardware led state still off */
+    Led_On(&st_Led);
+    /* Hardware led state still off */
     TEST_ASSERT_EQUAL(U1OFF, u1_Led_State);
 }
 
-void test_Led_Init_with_Off_function_Null_Should_Not_Off_Led_State( void )
+void test_Led_Init_with_Off_function_Null_Should_Not_Off_Led_State(void)
 {
     ST_LED st_Led;
-	u1_Led_State = U1ON;
+    u1_Led_State = U1ON;
     Led_Init(&st_Led, mock_init, mock_on, NULL);
-	Led_Off(&st_Led);
-	/* Hardware led state still ON */
+    Led_Off(&st_Led);
+    /* Hardware led state still ON */
     TEST_ASSERT_EQUAL(U1ON, u1_Led_State);
 }
 

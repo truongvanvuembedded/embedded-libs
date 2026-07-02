@@ -43,10 +43,10 @@ void tearDown(void)
 void test_CmdLine_Parser_Should_return_tbl_not_found_when_parameter_is_NULL(void)
 {
     U1 au1_Cmd[] = "TEST";
-	/* Table null */
+    /* Table null */
     TEST_ASSERT_EQUAL(U1_CMD_TBL_NOT_FOUND, u1_CmdLine_Parser(NULL, au1_Cmd));
     TEST_ASSERT_EQUAL(U1MIN, u1_TestHandler_Called);
-	/* Cmd null */
+    /* Cmd null */
     TEST_ASSERT_EQUAL(U1_CMD_NOT_FOUND, u1_CmdLine_Parser(st_CmdTable, NULL));
     TEST_ASSERT_EQUAL(U1MIN, u1_TestHandler_Called);
 }
